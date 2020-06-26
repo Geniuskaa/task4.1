@@ -19,49 +19,27 @@ func NewService(cardSvc *card.Service, interestFOS float64, minSumFOS int64, int
 }
 
 func (s *Service) Card2Card(from, to string, amount int64) (total int64, ok bool) { //"6373 0285 2950 1052"
-	f := false
-	fIndex := 0
-	t := false
-	tIndex := 0
-	i := 0
-	for i < len(s.CardSvc.Cards) {
-		if from == s.CardSvc.Cards[i].Number {
-			f = true
-			fIndex = i
-			break
-		} else { i++ }
-	}
-
-	i = 0
-
-	for i < len(s.CardSvc.Cards) {
-		if to == s.CardSvc.Cards[i].Number {
-			t = true
-			tIndex = i
-			break
-		} else { i++ }
-	}
-
-	i = 0
+	fInBase := s.CardSvc.Find(from)
+	tInBase := s.CardSvc.Find(to)
 
 	switch {
-	case f == true && t == true: //fromOur
+	case fInBase != nil && tInBase != nil: //fromOur
 		if s.MinSumFromOurService > amount {
 			fmt.Println("Сумма желаемого перевода меньше минимальной суммы перевода")
 			return 0, false
 		} else {
 			sum := float64(amount) * (s.InterestFromOurService/100.0 + 1.0)
 			total := int64(sum)
-			if s.CardSvc.Cards[fIndex].Balance < total {
+			if fInBase.Balance < total {
 				fmt.Println("Недостачно денег на балансе для перевода")
 				return total, false
 			} else {
-				s.CardSvc.Cards[fIndex].Balance -= total
-				s.CardSvc.Cards[tIndex].Balance += amount
+				fInBase.Balance -= total
+				tInBase.Balance += amount
 			}
 			return total, true
 		}
-	case f == false && t == false: //fromNotOur
+	case fInBase == nil && tInBase == nil: //fromNotOur
 		if s.MinSumNotFromOurService > amount {
 			fmt.Println("Сумма желаемого перевода меньше минимальной суммы перевода")
 			return 0, false
@@ -70,22 +48,22 @@ func (s *Service) Card2Card(from, to string, amount int64) (total int64, ok bool
 			total := int64(sum)
 			return total, true
 		}
-	case f == true && t == false: //fromOur
+	case fInBase != nil && tInBase == nil: //fromOur
 		if s.MinSumFromOurService > amount {
 			fmt.Println("Сумма желаемого перевода меньше минимальной суммы перевода")
 			return 0, false
 		} else {
 			sum := float64(amount) * (s.InterestFromOurService/100.0 + 1.0)
 			total := int64(sum)
-			if s.CardSvc.Cards[fIndex].Balance < total {
+			if fInBase.Balance < total {
 				fmt.Println("Недостачно денег на балансе для перевода")
 				return total, false
 			} else {
-				s.CardSvc.Cards[fIndex].Balance -= total
+				fInBase.Balance -= total
 			}
 			return total, true
 		}
-	case f == false && t == true: //NoInterest
+	case fInBase == nil && tInBase != nil: //NoInterest
 
 		/*if s.MinSumFromOurService > amount {
 			fmt.Println("Сумма желаемого перевода меньше минимальной суммы перевода")
@@ -93,8 +71,10 @@ func (s *Service) Card2Card(from, to string, amount int64) (total int64, ok bool
 			sum := float64(amount) * (s.InterestNotFromOurService/100.0 + 1.0)*/
 
 		total := amount //int64(sum)
-		s.CardSvc.Cards[tIndex].Balance += total
+		tInBase.Balance += total
 		return total, true
+	default:
+		return  0, false
 	}
 	return 0, true
 }

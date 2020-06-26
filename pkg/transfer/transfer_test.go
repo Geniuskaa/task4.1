@@ -39,7 +39,7 @@ func TestService_Card2Card(t *testing.T) {
 		{"SecondTest", fields{testService, 0.5, 10, 1.5, 30},
 			args{"8805 1348 9229 1370", "4005 1388 6709 1473", 576_67}, 579_55, false},
 		{"ThirdTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4005 1388 6709 1473", "7515 1348 6729 3872", 274_67}, 276_04, false},
+			args{"4005 1388 6709 1473", "7515 1348 6729 3872", 274_67}, 276_04, true},
 		{"ThourthTest", fields{testService, 0.5, 10, 1.5, 30},
 			args{"9905 1348 9229 1370", "4905 1348 7729 1872", 234_67}, 235_84, false},
 		{"FithTest", fields{testService, 0.5, 10, 1.5, 30},

@@ -41,3 +41,14 @@ func (s *Service) Add(balance int64, number string) *Card{
 	s.Cards = append(s.Cards, card)
 	return card
 }
+
+func (s *Service) Find(cardNumber string) *Card {
+	for _, card := range s.Cards {
+		if card.Number == cardNumber {
+			return card
+		}
+		//return nil
+	}
+	return nil
+}
+
