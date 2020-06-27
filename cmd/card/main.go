@@ -8,12 +8,16 @@ import (
 
 func main() {
 	service := card.NewService("Tinkoff Bank")
+
 	visa := service.IssueCard("VISA","RUB")
-	visa.Number = "4205 1348 6729 1672"
+	visa.Number = "5106 2148 6729 1672"
 	visa.Balance = 1_350_34
+
 	master := service.IssueCard("MasterCard", "RUB")
 	master.Number = "7381 0375 2928 6823"
 	master.Balance = 135_87
+
+
 	fmt.Println(visa)
 	fmt.Println(master)
 	fmt.Println(service.Cards[0], service.Cards[1])
