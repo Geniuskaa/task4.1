@@ -1,5 +1,10 @@
 package card
 
+import (
+	"strconv"
+	"strings"
+)
+
 type Service struct {
 	BankName string
 	Cards []*Card
@@ -51,3 +56,27 @@ func (s *Service) Find(cardNumber string) *Card {
 	return nil
 }
 
+func IsValid(number string) (valid bool)  {
+	n := strings.Split(strings.ReplaceAll(number, " ", ""), "")
+	a := make([]int, len(n))
+	i := 0
+	for _, m := range n {
+		a[i], _ = strconv.Atoi(m)
+		i++
+	}
+
+	sum := 0
+	for i=0; i < len(a); i++ {
+		if i == 0 || i % 2 == 0 {
+			if a[i]*2 > 9 {
+				sum = a[i]*2 - 9
+			}
+			sum += a[i]
+		}
+		sum += a[i]
+	}
+	if sum % 10 != 0 {
+		return false
+	}
+	return true
+}

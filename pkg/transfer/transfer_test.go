@@ -36,17 +36,17 @@ func TestService_Card2Card(t *testing.T) {
 		wantErr error
 	}{
 		{"FirstTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"5106 2148 6729 1672", "7505 1348 6729 1872", 234_67}, 0, false, ErrToCardNotFound}, // 235_84,true,nil
+			args{"5106 2148 6729 1672", "7505 1348 6729 1872", 234_67}, 0, false, ErrInvalidCardNumber}, // 235_84,true,nil
 		{"SecondTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"8805 1348 9229 1370", "4005 1388 6709 1473", 576_67}, 0, false, ErrFromCardNotFound}, // 579_55
+			args{"8805 1348 9229 1370", "4005 1388 6709 1473", 576_67}, 0, false, ErrInvalidCardNumber}, // 579_55
 		{"ThirdTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4005 1388 6709 1473", "7515 1348 6729 3872", 274_67}, 0, false, ErrFromCardNotFound}, // 276_04, true
+			args{"4005 1388 6709 1473", "7515 1348 6729 3872", 274_67}, 0, false, ErrInvalidCardNumber}, // 276_04, true
 		{"ThourthTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"9905 1348 9229 1370", "4905 1348 7729 1872", 234_67}, 0, false, ErrFromCardNotFound}, // 235_84
+			args{"9905 1348 9229 1370", "4905 1348 7729 1872", 234_67}, 0, false, ErrInvalidCardNumber}, // 235_84
 		{"FithTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4105 1948 6729 1372", "5106 2148 6729 1672", 234_67}, 0, false, ErrFromCardNotFound}, // 234_67
+			args{"4105 1948 6729 1372", "5106 2148 6729 1672", 234_67}, 0, false, ErrInvalidCardNumber}, // 234_67
 		{"SixthTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4215 1378 6729 1879", "7805 1338 6729 1172", 234_67}, 0, false, ErrFromCardNotFound}, // 238_19
+			args{"4215 1378 6729 1879", "7805 1338 6729 1172", 234_67}, 0, false, ErrInvalidCardNumber}, // 238_19
 	}
 	for _, tt := range tests {
 		s := &Service{

@@ -12,6 +12,7 @@ var (
 	ErrUnknowReason = errors.New("Something bad happend. Try again later")
 	ErrFromCardNotFound = errors.New("From card not found")
 	ErrToCardNotFound = errors.New("To card not found")
+	ErrInvalidCardNumber = errors.New("You wrote invalid card number")
 
 )
 
@@ -31,6 +32,12 @@ func NewService(cardSvc *card.Service, interestFOS float64, minSumFOS int64, int
 func (s *Service) Card2Card(from, to string, amount int64) (total int64, ok bool, err error) { //"6373 0285 2950 1052"
 	fFInbase := strings.HasPrefix(from, "5106 21")
 	tTInbase := strings.HasPrefix(to, "5106 21")
+	validFrom := card.IsValid(from)
+	validTo := card.IsValid(to)
+
+	if validFrom == false || validTo == false {
+		return 0, false, ErrInvalidCardNumber
+	}
 
 	if fFInbase == false {
 		return 0,false, ErrFromCardNotFound
