@@ -47,7 +47,6 @@ func (s *Service) Find(cardNumber string) *Card {
 		if card.Number == cardNumber {
 			return card
 		}
-		//return nil
 	}
 	return nil
 }

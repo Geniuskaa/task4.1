@@ -33,19 +33,20 @@ func TestService_Card2Card(t *testing.T) {
 		args      args
 		wantTotal int64
 		wantOk    bool
+		wantErr error
 	}{
 		{"FirstTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4205 1348 6729 1672", "7505 1348 6729 1872", 234_67}, 235_84, true},
+			args{"4205 1348 6729 1672", "7505 1348 6729 1872", 234_67}, 235_84, true, nil},
 		{"SecondTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"8805 1348 9229 1370", "4005 1388 6709 1473", 576_67}, 579_55, false},
+			args{"8805 1348 9229 1370", "4005 1388 6709 1473", 576_67}, 579_55, false, ErrCardBalanceNotEnough},
 		{"ThirdTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4005 1388 6709 1473", "7515 1348 6729 3872", 274_67}, 276_04, true},
+			args{"4005 1388 6709 1473", "7515 1348 6729 3872", 274_67}, 276_04, true, nil},
 		{"ThourthTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"9905 1348 9229 1370", "4905 1348 7729 1872", 234_67}, 235_84, false},
+			args{"9905 1348 9229 1370", "4905 1348 7729 1872", 234_67}, 235_84, false, ErrCardBalanceNotEnough},
 		{"FithTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4105 1948 6729 1372", "4205 1348 6729 1672", 234_67}, 234_67, true},
+			args{"4105 1948 6729 1372", "4205 1348 6729 1672", 234_67}, 234_67, true, nil},
 		{"SixthTest", fields{testService, 0.5, 10, 1.5, 30},
-			args{"4215 1378 6729 1879", "7805 1338 6729 1172", 234_67}, 238_19, true},
+			args{"4215 1378 6729 1879", "7805 1338 6729 1172", 234_67}, 238_19, true, nil},
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
@@ -56,12 +57,15 @@ func TestService_Card2Card(t *testing.T) {
 			InterestNotFromOurService: tt.fields.InterestNotFromOurService,
 			MinSumNotFromOurService:   tt.fields.MinSumNotFromOurService,
 		}
-		gotTotal, gotOk := s.Card2Card(tt.args.from, tt.args.to, tt.args.amount)
+		gotTotal, gotOk, gotErr := s.Card2Card(tt.args.from, tt.args.to, tt.args.amount)
 		if gotTotal != tt.wantTotal {
 			t.Errorf("Card2Card() gotTotal = %v, want %v", gotTotal, tt.wantTotal)
 		}
 		if gotOk != tt.wantOk {
 			t.Errorf("Card2Card() gotOk = %v, want %v", gotOk, tt.wantOk)
+		}
+		if gotErr != tt.wantErr {
+			t.Errorf("Card2Card() gotErr = %v, want %v", gotErr, tt.wantOk)
 		}
 
 	}
