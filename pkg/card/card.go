@@ -10,6 +10,14 @@ type Service struct {
 	Cards []*Card
 }
 
+type Transaction struct {
+	Id               int64
+	SumOfTransaction int64
+	Date             int64 // в формате Unix Timeship
+	MCC              string
+	Status           string
+}
+
 type Card struct {
 	Id int64
 	Issuer string
@@ -17,6 +25,7 @@ type Card struct {
 	Currency string
 	Number string
 	Icon string
+	Transactions []*Transaction
 }
 
 func NewService(bankName string) *Service {
@@ -80,3 +89,4 @@ func IsValid(number string) (valid bool)  {
 	}
 	return true
 }
+

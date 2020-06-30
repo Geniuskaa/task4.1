@@ -103,3 +103,4 @@ func (s *Service) Card2Card(from, to string, amount int64) (total int64, ok bool
 func (e *TransferError) Error() string {
 	return e.message
 }*/
+
